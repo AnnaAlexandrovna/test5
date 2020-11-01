@@ -3,9 +3,10 @@ package Repository;
 import Contract.AbstractContract;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
-public class ContractRepository {
+public class ContractRepository  {
 
     private AbstractContract[] listOfContract;
     private final int defaultNumOfContracts = 15;
@@ -23,15 +24,15 @@ public class ContractRepository {
         return Arrays.equals(listOfContract, that.listOfContract);
     }
 
+    public int getCounter() {
+        return counter;
+    }
+
     @Override
     public int hashCode() {
         return Arrays.hashCode(listOfContract);
     }
 
-
-    public void setListOfContract(AbstractContract[] listOfContract) {
-        this.listOfContract = listOfContract;
-    }
 
     public AbstractContract[] getListOfContract() {
         return listOfContract;
@@ -56,6 +57,16 @@ public class ContractRepository {
 
         listOfContract[counter] = abstractContract;
         counter++;
+    }
+
+    public void removeContract(UUID id) {
+        for (int i = 0; i < listOfContract.length; i++) {
+            if (listOfContract[i].getId().equals(id)) {
+                System.arraycopy(listOfContract, i + 1, listOfContract, i, counter - i);
+                counter--;
+                break;
+            }
+        }
     }
 
 }

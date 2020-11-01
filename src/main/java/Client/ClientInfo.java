@@ -1,27 +1,63 @@
 package Client;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
+/**
+ * Класс с информацией о клиенте со свойствами <b>id</b>, <b>firstName</b>, <b>lastName</b>, <b>dateOfBirth</b>, <b>gender</b> и <b>passport</b>.
+ */
 
 public class ClientInfo {
+    /** Поле id клиента */
     private UUID id;
+    /** Поле имя клиента */
     private String firstName;
+    /** Поле фамилия клиента */
     private String lastName;
+    /** Поле дата рождения клиента */
     private Date dateOfBirth;
+    /** Поле пол клиента */
     private String gender;
+    /** Поле паспортные данные клиента */
     private String passport;
 
-
-    public ClientInfo( String firstName, String lastName, Date dateOfBirth, String gender, String passport) {
+    /**
+     * Конструктор - создание нового объекта с определенными значениями, поле id формируется с помощью java.util.UUID
+     *@param firstName  имя клиента
+     *@param lastName фамилия клиента
+     *@param dateOfBirth дата рождения клиента в формате "dd.MM.yyyy"
+     *@param gender пол клиента ("man"/"woman")
+     *@param passport серия и номер паспорта клиента
+     *@throws ParseException при работе с датами
+     */
+    public ClientInfo( String firstName, String lastName, String dateOfBirth, String gender, String passport) throws ParseException {
         this.id = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = new SimpleDateFormat( "dd.MM.yyyy" ).parse(dateOfBirth);
         this.gender = gender;
         this.passport = passport;
     }
 
+    /**
+     * Переопределенный метод toString для вывода в консоль информации о клиенте
+     */
+    @Override
+    public String toString() {
+        return "ClientInfo{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender='" + gender + '\'' +
+                ", passport='" + passport + '\'' +
+                '}';
+    }
+    /**
+     * Переопределенный метод equals. В сравнении участвуют все поля объекта - id, firstName, lastName, dateOfBirth, gender, passport
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -34,48 +70,81 @@ public class ClientInfo {
                 gender.equals(that.gender) &&
                 passport.equals(that.passport);
     }
-
+    /**
+     * Переопределенный метод hashCode. В составлении хеша участвую все поля объекта - id, firstName, lastName, dateOfBirth, gender, passport
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, dateOfBirth, gender, passport);
     }
-
+    /**
+     * Геттер для имени клиента
+     * @return  имя клиента. Пример - "Иван"
+     */
     public String getFirstName() {
         return firstName;
     }
-
+    /**
+     * Сеттер для имени клиента
+     * @param firstName имя клиента. Пример - "Иван"
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    /**
+     * Геттер для фамилии клиента
+     * @return фамилия клиента. Пример - "Иванов"
+     */
     public String getLastName() {
         return lastName;
     }
-
+    /**
+     * Сеттер для фамилии клиента
+     * @param lastName фамилия клиента. Пример - "Иванов"
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
+    /**
+     * Геттер для даты рождения клиента
+     * @return дата рождения клиента. Пример - Wed Jan 28 00:00:00 MSK 2004
+     */
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    /**
+     * Сеттер для даты рождения клиента
+     * @param dateOfBirth дата рождения клиента. Пример - "28.01.2004"
+     * @throws ParseException при вводе неверного формата даты
+     */
+    public void setDateOfBirth(String dateOfBirth) throws ParseException {
+        this.dateOfBirth = new SimpleDateFormat( "dd.MM.yyyy" ).parse(dateOfBirth);
     }
-
+    /**
+     * Геттер для пола клиента
+     * @return дата рождения клиента. Пример - "man"/"woman"
+     */
     public String getGender() {
         return gender;
     }
-
+    /**
+     * Сеттер для пола клиента
+     * @param gender пол клиента. Пример - "man"/"woman"
+     */
     public void setGender(String gender) {
         this.gender = gender;
     }
-
+    /**
+     * Геттер для серии и номера паспорта клиента
+     * @return серия и номер паспорта клиента. Пример - "1104000000"
+     */
     public String getPassport() {
         return passport;
     }
-
+    /**
+     * Сеттер для серии и номера паспорта клиента
+     * @param passport фамилия клиента. Пример - "1104000000"
+     */
     public void setPassport(String passport) {
         this.passport = passport;
     }

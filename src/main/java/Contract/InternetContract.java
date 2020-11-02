@@ -1,5 +1,7 @@
 package Contract;
 
+import Client.ClientInfo;
+
 import java.text.ParseException;
 import java.util.List;
 
@@ -14,17 +16,16 @@ public class InternetContract extends AbstractContract{
      * Конструктор для создания контракта с предзаполненными параметрами
      * @param startDate дата начала действия контракта. Пример - "28.01.2004"
      * @param stopDate дата окончания дейтсвия контракта. Пример - "28.01.2004"
-     * @param listOfClient список клиентов контракта.
+     * @param owner владелец контракта.
      * @param maxSpeed максимальная скорость работы интернета по контракту. Пример - 350
-     * @throws ParseException при неверном формате даты
      */
-    public InternetContract(String startDate, String stopDate, List listOfClient, int maxSpeed) throws ParseException {
-        super(startDate, stopDate, listOfClient);
+    public InternetContract(String startDate, String stopDate, ClientInfo owner, int maxSpeed)  {
+        super(startDate, stopDate, owner);
         this.maxSpeed = maxSpeed;
     }
     /**
      * Переопределенный метод toString для печати детального описания по контракту в консоль
-     * @return детальное описание контракта. Пример - InternetContract{maxSpeed=350}AbstractContract{id=442b5d21-387e-42fb-ad86-8b231396a27b, startDate=Wed Jan 28 00:00:00 MSK 2004, stopDate=Sun Jan 28 00:00:00 MSK 2024, listOfClient=[ClientInfo{id=9d6f8362-c165-4c5e-aac4-1cadd2e85b99, firstName='test', lastName='test', dateOfBirth=Mon May 01 00:00:00 MSD 2000, gender='man', passport='2048 23423423424'}]}
+     * @return детальное описание контракта. Пример - InternetContract{maxSpeed=350}AbstractContract{id=442b5d21-387e-42fb-ad86-8b231396a27b, startDate=Wed Jan 28 00:00:00 MSK 2004, stopDate=Sun Jan 28 00:00:00 MSK 2024, owner=ClientInfo{id=9d6f8362-c165-4c5e-aac4-1cadd2e85b99, firstName='test', lastName='test', dateOfBirth=Mon May 01 00:00:00 MSD 2000, gender='man', passport='2048 23423423424'}}
      */
     @Override
     public String toString() {

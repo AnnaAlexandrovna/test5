@@ -1,5 +1,7 @@
 package Contract;
 
+import Client.ClientInfo;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,26 +19,30 @@ public class AbstractContract {
     private Date startDate;
     /** Поле окончания действия контракта */
     private Date stopDate;
-    /** Поле со списком всех клиентов с данным контрактом*/
-    private List listOfClient;
+    /** Поле с владельцем контракта*/
+    private ClientInfo owner;
 
     /**
      * Конструктор для создания контракта с предзаполненными параметрами
      * @param startDate дата начала действия контракта. Пример - "28.01.2004"
      * @param stopDate дата окончания дейтсвия контракта. Пример - "28.01.2004"
-     * @param listOfClient список клиентов контракта.
-     * @throws ParseException при неверном формате даты
+     * @param owner владелец контракта.
      */
-    public AbstractContract(String startDate, String stopDate, List listOfClient) throws ParseException {
-        this.startDate = new SimpleDateFormat( "dd.MM.yyyy" ).parse(startDate);
-        this.stopDate = new SimpleDateFormat( "dd.MM.yyyy" ).parse(stopDate);
-        this.listOfClient = listOfClient;
-        this.id = UUID.randomUUID();
+    public AbstractContract(String startDate, String stopDate, ClientInfo owner)  {
+        try {
+            this.startDate = new SimpleDateFormat( "dd.MM.yyyy" ).parse(startDate);
+            this.stopDate = new SimpleDateFormat( "dd.MM.yyyy" ).parse(stopDate);
+            this.owner = owner;
+            this.id = UUID.randomUUID();
+        } catch (ParseException exception){
+            exception.printStackTrace();
+            System.out.println("Возникла ошибка при обработке даты начала/прекращения действия контракта. Используйте формат - dd.MM.yyyy ");
+        }
     }
 
     /**
      * Переопределенный метод toString для печати детального описания по контракту в консоль
-     * @return детальное описание контракта. Пример - AbstractContract{id=442b5d21-387e-42fb-ad86-8b231396a27b, startDate=Wed Jan 28 00:00:00 MSK 2004, stopDate=Sun Jan 28 00:00:00 MSK 2024, listOfClient=[ClientInfo{id=9d6f8362-c165-4c5e-aac4-1cadd2e85b99, firstName='test', lastName='test', dateOfBirth=Mon May 01 00:00:00 MSD 2000, gender='man', passport='204823423423424'}]}
+     * @return детальное описание контракта. Пример - AbstractContract{id=442b5d21-387e-42fb-ad86-8b231396a27b, startDate=Wed Jan 28 00:00:00 MSK 2004, stopDate=Sun Jan 28 00:00:00 MSK 2024, owner=ClientInfo{id=9d6f8362-c165-4c5e-aac4-1cadd2e85b99, firstName='test', lastName='test', dateOfBirth=Mon May 01 00:00:00 MSD 2000, gender='man', passport='204823423423424'}}
      */
     @Override
     public String toString() {
@@ -44,11 +50,11 @@ public class AbstractContract {
                 "id=" + id +
                 ", startDate=" + startDate +
                 ", stopDate=" + stopDate +
-                ", listOfClient=" + listOfClient +
+                ", listOfClient=" + owner +
                 '}';
     }
     /**
-     * Переопределенный метод equals. В расчете участвуют все поля - id, startDate, stopDate, listOfClient
+     * Переопределенный метод equals. В расчете участвуют все поля - id, startDate, stopDate,  owner
      */
     @Override
     public boolean equals(Object o) {
@@ -58,14 +64,14 @@ public class AbstractContract {
         return id.equals(that.id) &&
                 startDate.equals(that.startDate) &&
                 stopDate.equals(that.stopDate) &&
-                listOfClient.equals(that.listOfClient);
+                owner.equals(that.owner);
     }
     /**
-     * Переопределенный метод hashCode. В расчете участвуют все поля - id, startDate, stopDate, listOfClient
+     * Переопределенный метод hashCode. В расчете участвуют все поля - id, startDate, stopDate,  owner
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, startDate, stopDate, listOfClient);
+        return Objects.hash(id, startDate, stopDate, owner);
     }
     /**
      * Геттер для имени клиента
@@ -105,18 +111,18 @@ public class AbstractContract {
         this.stopDate = new SimpleDateFormat( "dd.MM.yyyy" ).parse(stopDate);
     }
     /**
-     * Геттер для получения списков клиента контракта
-     * @return  список клиетов контракта.
+     * Геттер для получения владельца
+     * @return  владелец контракта.
      */
-    public List getListOfClient() {
-        return listOfClient;
+    public ClientInfo getListOfClient() {
+        return owner;
     }
     /**
-     * Сеттер для установки списка клиентов контракта
-     * @param listOfClient список клиентов.
+     * Сеттер для установки владельца
+     * @param owner список клиентов.
      */
-    public void setListOfClient(List listOfClient) {
-        this.listOfClient = listOfClient;
+    public void setListOfClient(ClientInfo owner) {
+        this.owner= owner;
     }
 
 }

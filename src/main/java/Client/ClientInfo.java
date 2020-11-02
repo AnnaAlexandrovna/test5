@@ -1,7 +1,10 @@
 package Client;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -22,6 +25,8 @@ public class ClientInfo {
     private String gender;
     /** Поле паспортные данные клиента */
     private String passport;
+    /** Поле возраст клиента */
+    private int age;
 
     /**
      * Конструктор - создание нового объекта с определенными значениями, поле id формируется с помощью java.util.UUID
@@ -30,15 +35,20 @@ public class ClientInfo {
      *@param dateOfBirth дата рождения клиента в формате "dd.MM.yyyy"
      *@param gender пол клиента ("man"/"woman")
      *@param passport серия и номер паспорта клиента
-     *@throws ParseException при работе с датами
      */
-    public ClientInfo( String firstName, String lastName, String dateOfBirth, String gender, String passport) throws ParseException {
-        this.id = UUID.randomUUID();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = new SimpleDateFormat( "dd.MM.yyyy" ).parse(dateOfBirth);
-        this.gender = gender;
-        this.passport = passport;
+    public ClientInfo( String firstName, String lastName, String dateOfBirth, String gender, String passport)  {
+        try {
+            this.id = UUID.randomUUID();
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.dateOfBirth = new SimpleDateFormat( "dd.MM.yyyy" ).parse(dateOfBirth);
+            this.gender = gender;
+            this.passport = passport;
+            this.updateAge();
+        } catch (ParseException exception){
+            exception.printStackTrace();
+            System.out.println("Возникла ошибка при обработке даты рождения клиента. Используйте формат - dd.MM.yyyy ");
+        }
     }
 
     /**
@@ -148,4 +158,19 @@ public class ClientInfo {
     public void setPassport(String passport) {
         this.passport = passport;
     }
+    /**
+     * Геттер для возраста клиента
+     * @return возраст клиента. Пример - 20
+     */
+    public int getAge() {
+        return age;
+    }
+    /**
+     * Метод обновления возраста клиента
+     */
+    public void updateAge(){
+        DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        this.age = Period.between(this.dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), (new Date()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).getYears();
+    }
+
 }

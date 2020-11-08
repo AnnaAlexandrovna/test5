@@ -173,4 +173,7 @@ public class ClientInfo {
         this.age = Period.between(this.dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), (new Date()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).getYears();
     }
 
+    public UUID getId() {
+        return id;
+    }
 }

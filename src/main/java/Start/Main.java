@@ -8,8 +8,6 @@ import Contract.TVContract;
 import Repository.ContractRepository;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -31,10 +29,28 @@ public class Main {
             System.out.println(rep[i]);
         }
         System.out.println("getContractById - " + repository.getContractById(uuid));
-        repository.removeContract(uuid);
+       // repository.removeContract(uuid);
         rep = repository.getListOfContract();
         for (int i=0; i<repository.getCounter(); i++){
             System.out.println(rep[i]);
         }
+        System.out.println("-----");
+        System.out.println(contract1.getAllField());
+//        System.out.println(contract1.isTheFieldInContract("maxSpeed"));
+//        System.out.println(contract1.isTheFieldInContract("max"));
+        System.out.println(contract2.getAllField());
+        System.out.println(contract3.getAllField());
+        AbstractContract contract4 = new InternetContract("28.01.2005","28.01.2024", client1, 350);
+        repository.addContract(contract4);
+//        System.out.println(repository.searchContract("id", contract1.getId().toString()));
+//        System.out.println(repository.searchContract("startDate", "28.01.2005"));
+//        System.out.println(repository.searchContract("smsNum", "150"));
+//        System.out.println(repository.searchContract("ownerId", client1.getId().toString()));
+//        System.out.println(repository.searchContract("ownerAge", Integer.toString(client1.getAge())));
+//        System.out.println(repository.searchContract("ownerPassport", client1.getPassport()));
+//        System.out.println(repository.searchContract("ownerGender", client1.getGender()));
+//        System.out.println(repository.searchContract("ownerFirstName", client1.getFirstName()));
+//        System.out.println(repository.searchContract("ownerFirstName", client1.getLastName()));
+        System.out.println(repository.searchContract("ownerDateOfBirth", "01.05.2000"));
     }
 }

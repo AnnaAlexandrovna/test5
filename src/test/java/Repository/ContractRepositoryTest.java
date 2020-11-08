@@ -8,8 +8,6 @@ import Contract.TVContract;
 import org.junit.Assert;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class ContractRepositoryTest {

@@ -47,4 +47,10 @@ public class InternetContract extends AbstractContract{
     public void setMaxSpeed(int maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
+
+    @Override
+    protected void fillAllField() {
+        super.fillAllField();
+        this.allField.add("maxSpeed");
+    }
 }

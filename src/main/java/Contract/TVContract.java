@@ -46,4 +46,10 @@ public class TVContract extends AbstractContract {
     public void setPackageNumber(int packageNumber) {
         this.packageNumber = packageNumber;
     }
+
+    @Override
+    protected void fillAllField() {
+        super.fillAllField();
+        this.allField.add("packageNumber");
+    }
 }

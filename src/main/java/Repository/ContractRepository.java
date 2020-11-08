@@ -1,9 +1,14 @@
 package Repository;
 
 import Contract.AbstractContract;
+import Contract.CellularContract;
+import Contract.InternetContract;
+import Contract.TVContract;
 
-import java.util.Arrays;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 /**
  * Класс с информацией о клиенте со свойствами <b>listOfContract</b>, <b>defaultNumOfContracts</b>, <b>counter</b>
  */
@@ -93,6 +98,152 @@ public class ContractRepository  {
                 break;
             }
         }
+    }
+
+    public List<AbstractContract> searchContract(String parOfSearch, String value){
+        List<AbstractContract> arrOfObj = new ArrayList<AbstractContract>();
+        for(int i=0; i<counter; i++){
+            try {
+                if (listOfContract[i].isTheFieldInContract(parOfSearch)){
+                    if (parOfSearch.equals("id")){
+                        if ((listOfContract[i].getId()).toString().equals(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if (parOfSearch.equals("startDate")){
+                        String formatter = new SimpleDateFormat("dd.MM.yyyy").format(listOfContract[i].getStartDate());
+                        if (formatter.equals(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    } else if (parOfSearch.equals("stopDate")){
+                        String formatter = new SimpleDateFormat("dd.MM.yyyy").format(listOfContract[i].getStopDate());
+                        if (formatter.equals(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    } else if(parOfSearch.equals("ownerId")){
+                        if(listOfContract[i].getOwner().getId().toString().equals(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("ownerFirstName")){
+                        if(listOfContract[i].getOwner().getFirstName().equals(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("ownerLastName")){
+                        if(listOfContract[i].getOwner().getLastName().equals(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("ownerDateOfBirth")){
+                        String formatter = new SimpleDateFormat("dd.MM.yyyy").format(listOfContract[i].getOwner().getDateOfBirth());
+                        if(formatter.equals(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("ownerGender")){
+                        if(listOfContract[i].getOwner().getGender().equals(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("ownerPassport")){
+                        if(listOfContract[i].getOwner().getPassport().equals(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("ownerAge")){
+                        if(listOfContract[i].getOwner().getAge() == Integer.parseInt(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("maxSpeed")){
+                        InternetContract contract = (InternetContract) listOfContract[i];
+                        if(contract.getMaxSpeed() == Integer.parseInt(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("minutesNum")){
+                        CellularContract contract = (CellularContract ) listOfContract[i];
+                        if(contract.getMinutesNum() == Integer.parseInt(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("gbNum")){
+                        CellularContract contract = (CellularContract ) listOfContract[i];
+                        if(contract.getGbNum() == Integer.parseInt(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("smsNum")){
+                        CellularContract contract = (CellularContract ) listOfContract[i];
+                        if(contract.getSmsNum() == Integer.parseInt(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }else if(parOfSearch.equals("packageNumber")){
+                        TVContract contract = (TVContract) listOfContract[i];
+                        if(contract.getPackageNumber() == Integer.parseInt(value)){
+                            arrOfObj.add(listOfContract[i]);
+                        }
+                    }
+                }else {
+                    System.out.println("У контрактов нет заданного свойства");
+                }
+            }catch (Exception e){
+                System.out.println("При поиске возникла ошибка");
+                e.printStackTrace();
+            }
+
+        }
+        System.out.println(arrOfObj.size());
+        if(arrOfObj.size()==0){
+            System.out.println("По условиям поиска контракт не найден");
+        }
+        return arrOfObj;
+    }
+
+    public List<AbstractContract> searchContract1(String parOfSort){
+        List<AbstractContract> arrOfObj = new ArrayList<AbstractContract>();
+        for(int i=0; i<counter; i++){
+            try {
+                if (listOfContract[i].isTheFieldInContract(parOfSort)){
+                    if (parOfSort.equals("id")){
+
+                    }else if (parOfSort.equals("startDate")){
+                        String formatter = new SimpleDateFormat("dd.MM.yyyy").format(listOfContract[i].getStartDate());
+
+                    } else if (parOfSort.equals("stopDate")){
+                        String formatter = new SimpleDateFormat("dd.MM.yyyy").format(listOfContract[i].getStopDate());
+
+                    } else if(parOfSort.equals("ownerId")){
+
+                    }else if(parOfSort.equals("ownerFirstName")){
+
+                    }else if(parOfSort.equals("ownerLastName")){
+
+                    }else if(parOfSort.equals("ownerDateOfBirth")){
+                        String formatter = new SimpleDateFormat("dd.MM.yyyy").format(listOfContract[i].getOwner().getDateOfBirth());
+
+                    }else if(parOfSort.equals("ownerGender")){
+
+                    }else if(parOfSort.equals("ownerPassport")){
+
+                    }else if(parOfSort.equals("ownerAge")){
+
+                    }else if(parOfSort.equals("maxSpeed")){
+                        InternetContract contract = (InternetContract) listOfContract[i];
+
+                    }else if(parOfSort.equals("minutesNum")){
+                        CellularContract contract = (CellularContract ) listOfContract[i];
+
+                    }else if(parOfSort.equals("gbNum")){
+                        CellularContract contract = (CellularContract ) listOfContract[i];
+
+                    }else if(parOfSort.equals("smsNum")){
+                        CellularContract contract = (CellularContract ) listOfContract[i];
+
+                    }else if(parOfSort.equals("packageNumber")){
+                        TVContract contract = (TVContract) listOfContract[i];
+
+                    }
+                }else {
+                    System.out.println("У контрактов нет заданного свойства");
+                }
+            }catch (Exception e){
+                System.out.println("При поиске возникла ошибка");
+                e.printStackTrace();
+            }
+
+        }
+        return arrOfObj;
     }
 
 }

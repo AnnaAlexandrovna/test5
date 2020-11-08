@@ -4,10 +4,7 @@ import Client.ClientInfo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Класс с общей информацией о контрактах со свойствами <b>id</b>, <b>startDate</b>, <b>stopDate</b> и <b>listOfClient</b>
@@ -21,6 +18,8 @@ public class AbstractContract {
     private Date stopDate;
     /** Поле с владельцем контракта*/
     private ClientInfo owner;
+    /** Поле с массивом всех доступных полей класса*/
+    protected List<String> allField = new ArrayList<>();
 
     /**
      * Конструктор для создания контракта с предзаполненными параметрами
@@ -34,6 +33,7 @@ public class AbstractContract {
             this.stopDate = new SimpleDateFormat( "dd.MM.yyyy" ).parse(stopDate);
             this.owner = owner;
             this.id = UUID.randomUUID();
+            this.fillAllField();
         } catch (ParseException exception){
             exception.printStackTrace();
             System.out.println("Возникла ошибка при обработке даты начала/прекращения действия контракта. Используйте формат - dd.MM.yyyy ");
@@ -125,4 +125,32 @@ public class AbstractContract {
         this.owner= owner;
     }
 
+    protected void fillAllField(){
+        this.allField.add("id");
+        this.allField.add("startDate");
+        this.allField.add("stopDate");
+        this.allField.add("ownerId");
+        this.allField.add("ownerFirstName");
+        this.allField.add("ownerLastName");
+        this.allField.add("ownerDateOfBirth");
+        this.allField.add("ownerGender");
+        this.allField.add("ownerPassport");
+        this.allField.add("ownerAge");
+    }
+
+    public List<String> getAllField() {
+        return allField;
+    }
+
+    public boolean isTheFieldInContract(String parOfSearching){
+        if(allField.contains(parOfSearching)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public ClientInfo getOwner() {
+        return owner;
+    }
 }

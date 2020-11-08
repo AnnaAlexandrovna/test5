@@ -2,8 +2,6 @@ package Contract;
 
 import Client.ClientInfo;
 
-import java.text.ParseException;
-import java.util.List;
 
 /**
  * Класс с информацией о контракте типа "Цифровое ТВ" со свойством <b>packageNumber</b>
@@ -46,7 +44,10 @@ public class TVContract extends AbstractContract {
     public void setPackageNumber(int packageNumber) {
         this.packageNumber = packageNumber;
     }
-
+    /**
+     * Метод для получения полей для поика
+     *
+     */
     @Override
     protected void fillAllField() {
         super.fillAllField();

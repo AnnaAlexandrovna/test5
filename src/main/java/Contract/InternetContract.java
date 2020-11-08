@@ -2,8 +2,6 @@ package Contract;
 
 import Client.ClientInfo;
 
-import java.text.ParseException;
-import java.util.List;
 
 /**
  * Класс с информацией о контракте типа "Интернет" со свойством <b>maxSpeed</b>
@@ -48,6 +46,10 @@ public class InternetContract extends AbstractContract{
         this.maxSpeed = maxSpeed;
     }
 
+    /**
+     * Метод для получения полей для поика
+     *
+     */
     @Override
     protected void fillAllField() {
         super.fillAllField();

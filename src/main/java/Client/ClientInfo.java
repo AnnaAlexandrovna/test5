@@ -172,7 +172,10 @@ public class ClientInfo {
         DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         this.age = Period.between(this.dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), (new Date()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).getYears();
     }
-
+    /**
+     * Геттер для id клиента
+     * @return возраст клиента. Пример - "162434f9-0d5d-4a2e-a080-ae55f8851f0b"
+     */
     public UUID getId() {
         return id;
     }

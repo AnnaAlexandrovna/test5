@@ -26,14 +26,7 @@ public class AbstractContract {
      * Поле с владельцем контракта
      */
     private ClientInfo owner;
-    /**
-     * Поле с массивом всех доступных полей класса
-     */
-    protected List<String> allField = new ArrayList<>();
-    /**
-     * Поле с массивом общих полей классов
-     */
-    protected List<String> sortField = new ArrayList<>();
+
 
     /**
      * Конструктор для создания контракта с предзаполненными параметрами
@@ -48,8 +41,6 @@ public class AbstractContract {
             this.stopDate = new SimpleDateFormat("dd.MM.yyyy").parse(stopDate);
             this.owner = owner;
             this.id = UUID.randomUUID();
-            this.fillAllField();
-            this.fillSortField();
         } catch (ParseException exception) {
             exception.printStackTrace();
             System.out.println("Возникла ошибка при обработке даты начала/прекращения действия контракта. Используйте формат - dd.MM.yyyy ");
@@ -150,55 +141,7 @@ public class AbstractContract {
         this.owner = owner;
     }
 
-    /**
-     * Метод установки полей, по которым можно выполнять поиск
-     *
-     */
-    protected void fillAllField() {
-        this.allField.add("id");
-        this.allField.add("startDate");
-        this.allField.add("stopDate");
-        this.allField.add("ownerId");
-        this.allField.add("ownerFirstName");
-        this.allField.add("ownerLastName");
-        this.allField.add("ownerDateOfBirth");
-        this.allField.add("ownerGender");
-        this.allField.add("ownerPassport");
-        this.allField.add("ownerAge");
-    }
-    /**
-     * Метод установки полей, по которым можно выполнять сортировку. Сортировка имеет смысл только для общих значений
-     *
-     */
-    protected void fillSortField() {
-        this.sortField.add("id");
-        this.sortField.add("startDate");
-        this.sortField.add("stopDate");
-    }
-    /**
-     * Метод получения полей для выполнения поиска
-     *@return названия полей, по которым можно выполнять поиск
-     */
-    public List<String> getAllField() {
-        return allField;
-    }
-    /**
-     * Метод говорящий о том, можно ли выполнить поиск по полю
-     *@param parOfSearching поле, по которому планируют выполнять поиск
-     *@return можно ли выполнять поиск по parOfSearching
-     */
-    public boolean isTheFieldInContract(String parOfSearching) {
-        return allField.contains(parOfSearching);
-    }
 
-    /**
-     * Метод говорящий о том, можно ли выполнить сортировку по полю
-     *@param parOfSort поле, по которому планируют выполнять сортировку
-     *@return можно ли выполнять сортировку по parOfSort
-     */
-    public boolean isTheFieldInSortField(String parOfSort) {
-        return sortField.contains(parOfSort);
-    }
     /**
      * Геттер для получения владельца
      *
@@ -207,22 +150,4 @@ public class AbstractContract {
     public ClientInfo getOwner() {
         return owner;
     }
-    /**
-     * Метод сравнения контракто при сортировке
-     *@param contract контракт, с которым будем сравнивать текущий
-     *@param parOfSort параметр сортировки
-     *@return положительное значение, если контракт больше; отрицательное значение, если контракт меньше; 0, если равны
-     */
-    public int compare(AbstractContract contract, String parOfSort) {
-        if (parOfSort.equals("startDate")) {
-            return this.startDate.compareTo(contract.getStartDate());
-        } else if (parOfSort.equals("stopDate")) {
-            return this.stopDate.compareTo(contract.getStopDate());
-        } else if (parOfSort.equals("id")) {
-            return this.id.compareTo(contract.getId());
-        }
-        return 0;
-    }
-
-
 }

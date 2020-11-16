@@ -1,12 +1,11 @@
 package Repository;
 
 import Contract.AbstractContract;
-import Contract.CellularContract;
-import Contract.InternetContract;
-import Contract.TVContract;
+import Sorter.ISorter;
+import Sorter.BubbleSorter;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Класс с информацией о клиенте со свойствами <b>listOfContract</b>, <b>defaultNumOfContracts</b>, <b>counter</b>
@@ -25,11 +24,19 @@ public class ContractRepository {
      */
     private int counter = 0;
 
+
+    ISorter sorter = new BubbleSorter();
+
     /**
      * Конструктор - создание нового объекта с пустым массивом вместимостью defaultNumOfContracts элементов
      */
     public ContractRepository() {
         this.listOfContract = new AbstractContract[defaultNumOfContracts];
+    }
+
+    public ContractRepository(AbstractContract[] listOfContract) {
+        this.listOfContract = listOfContract;
+        this.counter = listOfContract.length;
     }
 
     /**
@@ -66,7 +73,7 @@ public class ContractRepository {
      * @return массив добавленных контрактов.
      */
     public AbstractContract[] getListOfContract() {
-        return listOfContract;
+        return Arrays.copyOfRange(this.listOfContract, 0, this.getCounter());
     }
 
     /**
@@ -115,149 +122,38 @@ public class ContractRepository {
             }
         }
     }
-    /**
-     * Метод поиска контракта. Может выполняться по startDate, stopDate, id, maxSpeed, minutesNum, gbNum, smsNum, packageNumber, ownerId, ownerFirstName, ownerLastName, ownerDateOfBirth, ownerPassport, ownerGender, ownerAge
-     *
-     * @param parOfSearch по какому признаку будем искать контракт. Пример - "maxSpeed"
-     * @param value значения признака для поиска. Пример - "350"
-     */
-    public List<AbstractContract> searchContract(String parOfSearch, String value) {
-        List<AbstractContract> arrOfObj = new ArrayList<AbstractContract>();
-        for (int i = 0; i < counter; i++) {
-            try {
-                if (listOfContract[i].isTheFieldInContract(parOfSearch)) {
-                    if (parOfSearch.equals("id")) {
-                        if ((listOfContract[i].getId()).toString().equals(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("startDate")) {
-                        String formatter = new SimpleDateFormat("dd.MM.yyyy").format(listOfContract[i].getStartDate());
-                        if (formatter.equals(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("stopDate")) {
-                        String formatter = new SimpleDateFormat("dd.MM.yyyy").format(listOfContract[i].getStopDate());
-                        if (formatter.equals(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("ownerId")) {
-                        if (listOfContract[i].getOwner().getId().toString().equals(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("ownerFirstName")) {
-                        if (listOfContract[i].getOwner().getFirstName().equals(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("ownerLastName")) {
-                        if (listOfContract[i].getOwner().getLastName().equals(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("ownerDateOfBirth")) {
-                        String formatter = new SimpleDateFormat("dd.MM.yyyy").format(listOfContract[i].getOwner().getDateOfBirth());
-                        if (formatter.equals(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("ownerGender")) {
-                        if (listOfContract[i].getOwner().getGender().equals(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("ownerPassport")) {
-                        if (listOfContract[i].getOwner().getPassport().equals(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("ownerAge")) {
-                        if (listOfContract[i].getOwner().getAge() == Integer.parseInt(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("maxSpeed")) {
-                        InternetContract contract = (InternetContract) listOfContract[i];
-                        if (contract.getMaxSpeed() == Integer.parseInt(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("minutesNum")) {
-                        CellularContract contract = (CellularContract) listOfContract[i];
-                        if (contract.getMinutesNum() == Integer.parseInt(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("gbNum")) {
-                        CellularContract contract = (CellularContract) listOfContract[i];
-                        if (contract.getGbNum() == Integer.parseInt(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("smsNum")) {
-                        CellularContract contract = (CellularContract) listOfContract[i];
-                        if (contract.getSmsNum() == Integer.parseInt(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    } else if (parOfSearch.equals("packageNumber")) {
-                        TVContract contract = (TVContract) listOfContract[i];
-                        if (contract.getPackageNumber() == Integer.parseInt(value)) {
-                            arrOfObj.add(listOfContract[i]);
-                        }
-                    }
-                } else {
-                    System.out.println("У контрактов нет заданного свойства");
-                }
-            } catch (Exception e) {
-                System.out.println("При поиске возникла ошибка");
-                e.printStackTrace();
-            }
 
+    /**
+     * Метод поиска контракта.
+     *
+     * @param predicate по какому признаку будем искать контракт и как определять, удовлетворяет ли контракт условиям поиска
+     * @return объект типа Репозиторий, удовлетворяюший условиям поиска
+     */
+    public ContractRepository searchContract(Predicate<AbstractContract> predicate) {
+
+        List<AbstractContract> arrOfObj = new ArrayList<>();
+        for (AbstractContract contract : this.getListOfContract()) {
+            if (predicate.test(contract)) {
+                arrOfObj.add(contract);
+            }
         }
         System.out.println(arrOfObj.size());
         if (arrOfObj.size() == 0) {
             System.out.println("По условиям поиска контракт не найден");
         }
-        return arrOfObj;
+        return new ContractRepository(arrOfObj.toArray(new AbstractContract[arrOfObj.size()]));
     }
+
+    public void setListOfContract(AbstractContract[] listOfContract) {
+        this.listOfContract = listOfContract;
+    }
+
     /**
-     * Метод пузырьковой сортировки контрактов. Может выполняться по общим свойствам контракотов - startDate, stopDate, id
+     * Метод сортировки контрактов.
      *
-     * @param parOfSort по какому признаку будем искать контракт. Пример - "startDate"
+     * @param comparator метод сравнения
      */
-    public void bubbleSortOfContract(String parOfSort) {
-        boolean isSorted = false;
-        AbstractContract bufferValue;
-        if (counter != 0 && listOfContract[0].isTheFieldInSortField(parOfSort)) {
-            while (!isSorted) {
-                isSorted = true;
-                for (int i = 0; i < counter - 1; i++) {
-                    if (listOfContract[i].compare(listOfContract[i + 1], parOfSort) > 0) {
-                        isSorted = false;
-                        bufferValue = listOfContract[i];
-                        listOfContract[i] = listOfContract[i + 1];
-                        listOfContract[i + 1] = bufferValue;
-                    }
-                }
-            }
-        } else {
-            System.out.println("Список пуст/свойства нет у контракта/свойство специфичное для контракта");
-        }
+    public void sort(Comparator<AbstractContract> comparator) {
+        this.listOfContract = sorter.sort(comparator, this.getListOfContract());
     }
-    /**
-     * Метод сортировки выбором контрактов. Может выполняться по общим свойствам контракотов - startDate, stopDate, id
-     *
-     * @param parOfSort по какому признаку будем искать контракт. Пример - "startDate"
-     */
-    public void selectionSortOfContract(String parOfSort) {
-        AbstractContract bufferValue;
-        if (counter != 0 && listOfContract[0].isTheFieldInSortField(parOfSort)) {
-            for(int left = 0; left < counter; left++){
-                int minElementPosition = left;
-                for (int i = minElementPosition; i < counter; i++) {
-                    if (listOfContract[i].compare(listOfContract[minElementPosition], parOfSort) < 0) {
-                        minElementPosition = i;
-                    }
-                }
-                bufferValue = listOfContract[left];
-                listOfContract[left] = listOfContract[minElementPosition];
-                listOfContract[minElementPosition] = bufferValue;
-            }
-        } else {
-            System.out.println("Список пуст/свойства нет у контракта/свойство специфичное для контракта");
-        }
-    }
-
-
-
 }

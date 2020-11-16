@@ -104,15 +104,5 @@ public class CellularContract extends AbstractContract {
     public void setSmsNum(int smsNum) {
         this.smsNum = smsNum;
     }
-    /**
-     * Метод для получения полей для поика
-     *
-     */
-    @Override
-    protected void fillAllField() {
-        super.fillAllField();
-        this.allField.add("minutesNum");
-        this.allField.add("gbNum");
-        this.allField.add("smsNum");
-    }
+
 }

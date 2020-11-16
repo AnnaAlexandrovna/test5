@@ -28,35 +28,5 @@ public class Main {
         for (int i=0; i<repository.getCounter(); i++){
             System.out.println(rep[i]);
         }
-        System.out.println("getContractById - " + repository.getContractById(uuid));
-       // repository.removeContract(uuid);
-        rep = repository.getListOfContract();
-        for (int i=0; i<repository.getCounter(); i++){
-            System.out.println(rep[i]);
-        }
-        System.out.println("-----");
-        AbstractContract contract4 = new InternetContract("28.01.2005","28.01.2024", client1, 350);
-        repository.addContract(contract4);
-
-        System.out.println(repository.searchContract("ownerDateOfBirth", "01.05.2000"));
-        System.out.println("-------");
-//        repository.bubbleSortOfContract("stopDate");
-//        rep = repository.getListOfContract();
-//        for (int i=0; i<repository.getCounter(); i++){
-//            System.out.println(rep[i].getStopDate());
-//        }
-
-        repository.bubbleSortOfContract("stopDate");
-        rep = repository.getListOfContract();
-        for (int i=0; i<repository.getCounter(); i++){
-            System.out.println(rep[i].getStopDate());
-        }
-        System.out.println("------");
-        repository.selectionSortOfContract("stopDate");
-        rep = repository.getListOfContract();
-        for (int i=0; i<repository.getCounter(); i++){
-            System.out.println(rep[i].getStopDate());
-        }
-
     }
 }

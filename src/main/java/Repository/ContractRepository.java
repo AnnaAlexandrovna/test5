@@ -38,14 +38,16 @@ public class ContractRepository {
      */
     public ContractRepository() {
         this.listOfContract = new AbstractContract[defaultNumOfContracts];
-        this.allOwners = new HashSet<ClientInfo>();
+        this.allOwners = new HashSet<>();
     }
     /**
      * Конструктор - создание нового объекта с переданным массивом контрактов
+     * @param listOfContract список контрактов
      */
     public ContractRepository(AbstractContract[] listOfContract) {
         this.listOfContract = listOfContract;
         this.counter = listOfContract.length;
+        this.allOwners = new HashSet<>();
         this.addAllOwner(listOfContract);
     }
     /**

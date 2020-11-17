@@ -14,7 +14,20 @@ import java.util.List;
 
 public class MyFileReader {
 
+    /**
+     * Метод для заполнения репозитория из файла
+     * @param passToFile путь до файла
+     * @param contractRepository репозиторий, куда надо добавлять контракты
+     */
     public void readFileAndMakeRepo(String passToFile, ContractRepository contractRepository){
+        makeRepo(makeListFromFile(passToFile), contractRepository);
+    }
+    /**
+     * Метод для составления списка строк из файла
+     * @param passToFile путь до файла
+     * @return список контрактов
+     */
+    private List<String[]> makeListFromFile(String passToFile){
         List<String[]> list = new ArrayList<>();
         try{
             FileReader fileReader = new FileReader(passToFile);
@@ -25,10 +38,15 @@ public class MyFileReader {
         }catch (Exception exception){
             exception.printStackTrace();
         }
-        makeRepo(list, contractRepository);
-    }
+        return list;
 
-    public void makeRepo(List<String[]> list, ContractRepository contractRepository){
+    }
+    /**
+     * Метод для составления списка строк из файла
+     * @param list строковый список контрактов
+     * @param contractRepository репозиторий, куда надо вносить контракты
+     */
+    private void makeRepo(List<String[]> list, ContractRepository contractRepository){
         for (String[] strings : list) {
             for(int stringNum=0;stringNum<strings.length;stringNum++){
                 String[] mass = strings[stringNum].split(";\"|;");

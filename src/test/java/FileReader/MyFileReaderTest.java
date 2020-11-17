@@ -22,5 +22,6 @@ public class MyFileReaderTest {
         for (ClientInfo owner : contractRepository.getAllOwners()) {
             System.out.println(owner);
         }
+        Assert.assertEquals(3, contractRepository.getAllOwners().size());
     }
 }

@@ -1,25 +1,44 @@
 package Repository;
 
 import Contract.AbstractContract;
+import Sorter.ISorter;
+import Sorter.BubbleSorter;
 
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Predicate;
+
 /**
  * Класс с информацией о клиенте со свойствами <b>listOfContract</b>, <b>defaultNumOfContracts</b>, <b>counter</b>
  */
-public class ContractRepository  {
-    /** Поле для хранения массива контрактов */
+public class ContractRepository {
+    /**
+     * Поле для хранения массива контрактов
+     */
     private AbstractContract[] listOfContract;
-    /** Поле для первоначального размера массива */
+    /**
+     * Поле для первоначального размера массива
+     */
     private final int defaultNumOfContracts = 15;
-    /** Поле для счетчика добавленных контрактов */
+    /**
+     * Поле для счетчика добавленных контрактов
+     */
     private int counter = 0;
+
+
+    ISorter sorter = new BubbleSorter();
+
     /**
      * Конструктор - создание нового объекта с пустым массивом вместимостью defaultNumOfContracts элементов
      */
     public ContractRepository() {
         this.listOfContract = new AbstractContract[defaultNumOfContracts];
     }
+
+    public ContractRepository(AbstractContract[] listOfContract) {
+        this.listOfContract = listOfContract;
+        this.counter = listOfContract.length;
+    }
+
     /**
      * Переопределенный метод equals. В сравнении участвует поле listOfContract
      */
@@ -30,13 +49,16 @@ public class ContractRepository  {
         ContractRepository that = (ContractRepository) o;
         return Arrays.equals(listOfContract, that.listOfContract);
     }
+
     /**
      * Геттер для количества добавленных контрактов
-     * @return  количество добавленных контрактов. Пример - 8
+     *
+     * @return количество добавленных контрактов. Пример - 8
      */
     public int getCounter() {
         return counter;
     }
+
     /**
      * Переопределенный метод hashCode. В сравнении участвует поле listOfContract
      */
@@ -47,16 +69,18 @@ public class ContractRepository  {
 
     /**
      * Геттер для получения массива добавленных контрактов
-     * @return  массив добавленных контрактов.
+     *
+     * @return массив добавленных контрактов.
      */
     public AbstractContract[] getListOfContract() {
-        return listOfContract;
+        return Arrays.copyOfRange(this.listOfContract, 0, this.getCounter());
     }
 
     /**
      * Метод получения контарта по id
+     *
      * @param id UUID контракта. Пример - 442b5d21-387e-42fb-ad86-8b231396a27b
-     * @return  найденный по id контракт или null
+     * @return найденный по id контракт или null
      */
     public AbstractContract getContractById(UUID id) {
 
@@ -67,8 +91,10 @@ public class ContractRepository  {
         }
         return null;
     }
+
     /**
      * Метод добавления контракта
+     *
      * @param abstractContract добавляемый контракт.
      */
     public void addContract(AbstractContract abstractContract) {
@@ -81,8 +107,10 @@ public class ContractRepository  {
         listOfContract[counter] = abstractContract;
         counter++;
     }
+
     /**
      * Метод удаления контракта по id
+     *
      * @param id UUID контракта.
      */
     public void removeContract(UUID id) {
@@ -95,4 +123,37 @@ public class ContractRepository  {
         }
     }
 
+    /**
+     * Метод поиска контракта.
+     *
+     * @param predicate по какому признаку будем искать контракт и как определять, удовлетворяет ли контракт условиям поиска
+     * @return объект типа Репозиторий, удовлетворяюший условиям поиска
+     */
+    public ContractRepository searchContract(Predicate<AbstractContract> predicate) {
+
+        List<AbstractContract> arrOfObj = new ArrayList<>();
+        for (AbstractContract contract : this.getListOfContract()) {
+            if (predicate.test(contract)) {
+                arrOfObj.add(contract);
+            }
+        }
+        System.out.println(arrOfObj.size());
+        if (arrOfObj.size() == 0) {
+            System.out.println("По условиям поиска контракт не найден");
+        }
+        return new ContractRepository(arrOfObj.toArray(new AbstractContract[arrOfObj.size()]));
+    }
+
+    public void setListOfContract(AbstractContract[] listOfContract) {
+        this.listOfContract = listOfContract;
+    }
+
+    /**
+     * Метод сортировки контрактов.
+     *
+     * @param comparator метод сравнения
+     */
+    public void sort(Comparator<AbstractContract> comparator) {
+        this.listOfContract = sorter.sort(comparator, this.getListOfContract());
+    }
 }

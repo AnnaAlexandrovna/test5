@@ -8,8 +8,6 @@ import Contract.TVContract;
 import Repository.ContractRepository;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -27,12 +25,6 @@ public class Main {
         repository.addContract(contract2);
         repository.addContract(contract3);
         AbstractContract [] rep = repository.getListOfContract();
-        for (int i=0; i<repository.getCounter(); i++){
-            System.out.println(rep[i]);
-        }
-        System.out.println("getContractById - " + repository.getContractById(uuid));
-        repository.removeContract(uuid);
-        rep = repository.getListOfContract();
         for (int i=0; i<repository.getCounter(); i++){
             System.out.println(rep[i]);
         }

@@ -73,8 +73,7 @@ public class ClientInfo {
         if (this == o) return true;
         if (!(o instanceof ClientInfo)) return false;
         ClientInfo that = (ClientInfo) o;
-        return id.equals(that.id) &&
-                firstName.equals(that.firstName) &&
+        return firstName.equals(that.firstName) &&
                 lastName.equals(that.lastName) &&
                 dateOfBirth.equals(that.dateOfBirth) &&
                 gender.equals(that.gender) &&

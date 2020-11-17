@@ -58,7 +58,7 @@ public class AbstractContract {
                 "id=" + id +
                 ", startDate=" + startDate +
                 ", stopDate=" + stopDate +
-                ", listOfClient=" + owner +
+                ", owner=" + owner +
                 '}';
     }
 

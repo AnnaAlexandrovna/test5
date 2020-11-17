@@ -1,5 +1,6 @@
 package Repository;
 
+import Client.ClientInfo;
 import Contract.AbstractContract;
 import Sorter.ISorter;
 import Sorter.BubbleSorter;
@@ -23,8 +24,13 @@ public class ContractRepository {
      * Поле для счетчика добавленных контрактов
      */
     private int counter = 0;
-
-
+    /**
+     * Поле для учета всех сущетсвующих владельцев контрактов
+     */
+    private Set<ClientInfo> allOwners;
+    /**
+     * Поле для выбора способа сортировки контрактов
+     */
     ISorter sorter = new BubbleSorter();
 
     /**
@@ -32,13 +38,25 @@ public class ContractRepository {
      */
     public ContractRepository() {
         this.listOfContract = new AbstractContract[defaultNumOfContracts];
+        this.allOwners = new HashSet<ClientInfo>();
     }
-
+    /**
+     * Конструктор - создание нового объекта с переданным массивом контрактов
+     */
     public ContractRepository(AbstractContract[] listOfContract) {
         this.listOfContract = listOfContract;
         this.counter = listOfContract.length;
+        this.addAllOwner(listOfContract);
     }
-
+    /**
+     * Метод добавления владельцев контрактов в Set
+     * @param listOfContract список контрактов
+     */
+    private void addAllOwner(AbstractContract[] listOfContract){
+        for (AbstractContract contract : listOfContract) {
+            this.allOwners.add(contract.getOwner());
+        }
+    }
     /**
      * Переопределенный метод equals. В сравнении участвует поле listOfContract
      */
@@ -105,6 +123,7 @@ public class ContractRepository {
         }
 
         listOfContract[counter] = abstractContract;
+        allOwners.add(abstractContract.getOwner());
         counter++;
     }
 
@@ -143,7 +162,11 @@ public class ContractRepository {
         }
         return new ContractRepository(arrOfObj.toArray(new AbstractContract[arrOfObj.size()]));
     }
-
+    /**
+     * Сеттер для установки массива добавленных контрактов
+     *
+     * @param listOfContract  массив добавленных контрактов.
+     */
     public void setListOfContract(AbstractContract[] listOfContract) {
         this.listOfContract = listOfContract;
     }
@@ -155,5 +178,13 @@ public class ContractRepository {
      */
     public void sort(Comparator<AbstractContract> comparator) {
         this.listOfContract = sorter.sort(comparator, this.getListOfContract());
+    }
+    /**
+     * Метод сортировки контрактов.
+     *
+     * @return список всех владельцев контрактов
+     **/
+    public Set<ClientInfo> getAllOwners() {
+        return allOwners;
     }
 }

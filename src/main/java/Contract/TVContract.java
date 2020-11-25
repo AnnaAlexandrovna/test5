@@ -2,12 +2,17 @@ package Contract;
 
 import Client.ClientInfo;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 
 /**
  * Класс с информацией о контракте типа "Цифровое ТВ" со свойством <b>packageNumber</b>
  */
 public class TVContract extends AbstractContract {
     /** Поле номер пакета по контракту*/
+    @Min(1)
+    @Max(1000)
     private int packageNumber;
     /**
      * Конструктор для создания контракта с предзаполненными параметрами
@@ -44,9 +49,5 @@ public class TVContract extends AbstractContract {
     public void setPackageNumber(int packageNumber) {
         this.packageNumber = packageNumber;
     }
-    /**
-     * Метод для получения полей для поика
-     *
-     */
 
 }

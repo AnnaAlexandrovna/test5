@@ -2,6 +2,10 @@ package Contract;
 
 import Client.ClientInfo;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+
 
 /**
  * Класс с информацией о котракте типа "Сотовая связь" со свойствами <b>minutesNum</b>, <b>gbNum</b> и <b>smsNum</b>.
@@ -10,14 +14,20 @@ public class CellularContract extends AbstractContract {
     /**
      * Поле количества минут по контракту
      */
+    @Min(1)
+    @Max(1000)
     private int minutesNum;
     /**
      * Поле количества Гб интернета по контракту
      */
+    @Min(1)
+    @Max(1000)
     private int gbNum;
     /**
      * Поле количества смс по контракту
      */
+    @Min(1)
+    @Max(1000)
     private int smsNum;
 
     /**

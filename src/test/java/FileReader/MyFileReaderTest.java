@@ -17,11 +17,11 @@ public class MyFileReaderTest {
         for (AbstractContract c : contractRepository.getListOfContract()) {
             System.out.println(c);
         }
-        Assert.assertEquals(4, contractRepository.getListOfContract().length);
+        Assert.assertEquals(3, contractRepository.getListOfContract().length);
         System.out.println("Owners:");
         for (ClientInfo owner : contractRepository.getAllOwners()) {
             System.out.println(owner);
         }
-        Assert.assertEquals(3, contractRepository.getAllOwners().size());
+        Assert.assertEquals(2, contractRepository.getAllOwners().size());
     }
 }

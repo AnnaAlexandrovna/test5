@@ -2,12 +2,16 @@ package Contract;
 
 import Client.ClientInfo;
 
+import javax.validation.constraints.*;
+
 
 /**
  * Класс с информацией о контракте типа "Интернет" со свойством <b>maxSpeed</b>
  */
 public class InternetContract extends AbstractContract{
     /** Поле максимальной скорости интернета по контракту */
+   @Min(1)
+   @Max(1000)
     private int maxSpeed;
 
     /**
@@ -46,9 +50,5 @@ public class InternetContract extends AbstractContract{
         this.maxSpeed = maxSpeed;
     }
 
-    /**
-     * Метод для получения полей для поика
-     *
-     */
 
 }

@@ -2,6 +2,7 @@ package Contract;
 
 import Client.ClientInfo;
 
+import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -17,14 +18,17 @@ public class AbstractContract {
     /**
      * Поле начала действия контракта
      */
+    @NotNull
     private Date startDate;
     /**
      * Поле окончания действия контракта
      */
+    @NotNull
     private Date stopDate;
     /**
      * Поле с владельцем контракта
      */
+    @NotNull
     private ClientInfo owner;
 
 

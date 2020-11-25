@@ -5,14 +5,23 @@ import Contract.AbstractContract;
 import Contract.CellularContract;
 import Contract.InternetContract;
 import Contract.TVContract;
+import MyValidator.MyValidator;
 import Repository.ContractRepository;
+import ValidatorResult.MyValidatorResult;
 import com.opencsv.CSVReader;
 
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс для чтения cvs файла и записи в определенный репозиторий
+ */
 public class MyFileReader {
+    /**
+     * Поле влидатора
+     */
+    private MyValidator validator = new MyValidator();
 
     /**
      * Метод для заполнения репозитория из файла
@@ -53,6 +62,7 @@ public class MyFileReader {
                 if(mass.length>=8){
 
                     ClientInfo clientInfo = new ClientInfo(mass[2],mass[3],mass[4],mass[5],mass[6]);
+
                     if(contractRepository.getCounter()>0){
                         for (ClientInfo owner : contractRepository.getAllOwners()) {
                             if(clientInfo.equals(owner)){
@@ -62,13 +72,31 @@ public class MyFileReader {
                     }
                     if (mass[7].equals("internet")){
                         AbstractContract contract = new InternetContract(mass[0],mass[1],clientInfo, Integer.parseInt(mass[8]));
-                        contractRepository.addContract(contract);
+                        MyValidatorResult result = validator.makeValidate(contract);
+                        if(!result.getRiskValue().equals("high")){
+                            contractRepository.addContract(contract);
+                        }
+                        if(!result.getRiskValue().equals("ok")){
+                            result.printEr();
+                        }
                     } else if(mass[7].equals("cell") && mass.length>=10){
                         AbstractContract contract = new CellularContract(mass[0],mass[1],clientInfo, Integer.parseInt(mass[8]),Integer.parseInt(mass[9]),Integer.parseInt(mass[10]) );
-                        contractRepository.addContract(contract);
+                        MyValidatorResult result = validator.makeValidate(contract);
+                        if(!result.getRiskValue().equals("high")){
+                            contractRepository.addContract(contract);
+                        }
+                        if(!result.getRiskValue().equals("ok")){
+                            result.printEr();
+                        }
                     }else if(mass[7].equals("tv")){
                         AbstractContract contract = new TVContract(mass[0],mass[1],clientInfo, Integer.parseInt(mass[8]));
-                        contractRepository.addContract(contract);
+                        MyValidatorResult result = validator.makeValidate(contract);
+                        if(!result.getRiskValue().equals("high")){
+                            contractRepository.addContract(contract);
+                        }
+                        if(!result.getRiskValue().equals("ok")){
+                            result.printEr();
+                        }
                     }else {
                         System.out.println("Введена неполная информация о контракте типа мобильная связь");
                     }
@@ -78,4 +106,5 @@ public class MyFileReader {
             }
         }
     }
+
 }

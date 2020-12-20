@@ -7,7 +7,8 @@ import java.util.Comparator;
 public class SelectionSorter implements ISorter {
     /**
      * Метод сортировки
-     * @param comparator для определения критерия сортировки и определения направления сортировки
+     *
+     * @param comparator     для определения критерия сортировки и определения направления сортировки
      * @param listOfContract массив контрактов для сортировки
      * @return массив AbstractContract
      **/
@@ -17,7 +18,7 @@ public class SelectionSorter implements ISorter {
         for (int left = 0; left < listOfContract.length; left++) {
             int minElementPosition = left;
             for (int i = minElementPosition; i < listOfContract.length; i++) {
-                if (comparator.compare(listOfContract[i],listOfContract[minElementPosition]) < 0) {
+                if (comparator.compare(listOfContract[i], listOfContract[minElementPosition]) < 0) {
                     minElementPosition = i;
                 }
             }

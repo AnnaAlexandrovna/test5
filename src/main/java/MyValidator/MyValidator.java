@@ -18,6 +18,7 @@ import java.util.Set;
 public class MyValidator {
     /**
      * Метод для заполнения репозитория из файла
+     *
      * @param contract контракт, поля которого надо проверить
      * @return MyValidatorResult c информацией о проверках
      */
@@ -29,11 +30,11 @@ public class MyValidator {
         List<String> listOfErrors = new ArrayList();
         if (validate.size() != 0) {
             for (ConstraintViolation<ClientInfo> violation : validate) {
-                listOfErrors.add(violation.getInvalidValue() + " " +violation.getMessage());
-                if(violation.getConstraintDescriptor().getAnnotation().annotationType().toString().endsWith("Max") ||
-                        violation.getConstraintDescriptor().getAnnotation().annotationType().toString().endsWith("Size")){
+                listOfErrors.add(violation.getInvalidValue() + " " + violation.getMessage());
+                if (violation.getConstraintDescriptor().getAnnotation().annotationType().toString().endsWith("Max") ||
+                        violation.getConstraintDescriptor().getAnnotation().annotationType().toString().endsWith("Size")) {
                     result.setRiskValue("high");
-                }else if(result.getRiskValue().equals("high")) {
+                } else if (result.getRiskValue().equals("high")) {
                     result.setRiskValue("low");
                 }
             }
@@ -43,17 +44,17 @@ public class MyValidator {
         Set<ConstraintViolation<AbstractContract>> validate1 = validator.validate(contract);
         if (validate1.size() != 0) {
             for (ConstraintViolation<AbstractContract> violation : validate1) {
-                listOfErrors.add(violation.getInvalidValue() + " "+ violation.getMessage());
-                if(violation.getConstraintDescriptor().getAnnotation().annotationType().toString().endsWith("Max") ||
-                        violation.getConstraintDescriptor().getAnnotation().annotationType().toString().endsWith("Size")){
+                listOfErrors.add(violation.getInvalidValue() + " " + violation.getMessage());
+                if (violation.getConstraintDescriptor().getAnnotation().annotationType().toString().endsWith("Max") ||
+                        violation.getConstraintDescriptor().getAnnotation().annotationType().toString().endsWith("Size")) {
                     result.setRiskValue("high");
-                }else if(result.getRiskValue().equals("high")) {
+                } else if (result.getRiskValue().equals("high")) {
                     result.setRiskValue("low");
                 }
             }
         }
 
-        if(listOfErrors.size()!=0){
+        if (listOfErrors.size() != 0) {
             result.setErrorMessages(listOfErrors);
             result.setResult("error");
         }

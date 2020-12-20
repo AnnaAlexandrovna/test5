@@ -6,7 +6,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 
-
 /**
  * Класс с информацией о котракте типа "Сотовая связь" со свойствами <b>minutesNum</b>, <b>gbNum</b> и <b>smsNum</b>.
  */

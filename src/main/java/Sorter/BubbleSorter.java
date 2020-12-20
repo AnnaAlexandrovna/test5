@@ -7,7 +7,8 @@ import java.util.Comparator;
 public class BubbleSorter implements ISorter {
     /**
      * Метод сортировки
-     * @param comparator для определения критерия сортировки и определения направления сортировки
+     *
+     * @param comparator     для определения критерия сортировки и определения направления сортировки
      * @param listOfContract массив контрактов для сортировки
      * @return массив AbstractContract
      **/

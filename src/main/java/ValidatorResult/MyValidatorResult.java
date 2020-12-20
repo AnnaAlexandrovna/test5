@@ -1,6 +1,5 @@
 package ValidatorResult;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +19,13 @@ public class MyValidatorResult {
      * Поле с описанием успещности проверки. Возможные значения - "success", "error"
      */
     private String result;
+
     /**
      * Конструктор для результата проверки со всеми заданными параметрами
      *
-     * @param result результат проверки. Пример - "28.01.2004"
-     * @param errorMessages  список ошибок валидации.
-     * @param riskValue  уровень ошибки.
+     * @param result        результат проверки. Пример - "28.01.2004"
+     * @param errorMessages список ошибок валидации.
+     * @param riskValue     уровень ошибки.
      */
     public MyValidatorResult(String result, List<String> errorMessages, String riskValue) {
         this.errorMessages = errorMessages;
@@ -41,6 +41,7 @@ public class MyValidatorResult {
         this.riskValue = "ok";
         this.result = "success";
     }
+
     /**
      * Геттер для получения списка ошибок валидации
      *
@@ -49,6 +50,7 @@ public class MyValidatorResult {
     public List<String> getErrorMessages() {
         return errorMessages;
     }
+
     /**
      * Сеттер для установки списка ошибок валидации
      *
@@ -66,6 +68,7 @@ public class MyValidatorResult {
     public String getRiskValue() {
         return riskValue;
     }
+
     /**
      * Сеттер для уровня ошибки валидации
      *
@@ -74,6 +77,7 @@ public class MyValidatorResult {
     public void setRiskValue(String riskValue) {
         this.riskValue = riskValue;
     }
+
     /**
      * Геттер для получения успешности проверки
      *
@@ -94,9 +98,8 @@ public class MyValidatorResult {
 
     /**
      * Метод вывода в консоль информации об ошибках валидации
-     *
      */
-    public void printEr(){
+    public void printEr() {
         for (String errorMessage : this.errorMessages) {
             System.out.println(errorMessage);
         }

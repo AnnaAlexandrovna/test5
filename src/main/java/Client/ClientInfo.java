@@ -9,54 +9,70 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
+
 /**
  * Класс с информацией о клиенте со свойствами <b>id</b>, <b>firstName</b>, <b>lastName</b>, <b>dateOfBirth</b>, <b>gender</b> и <b>passport</b>.
  */
 
 public class ClientInfo {
-    /** Поле id клиента */
+    /**
+     * Поле id клиента
+     */
     private UUID id;
-    /** Поле имя клиента */
+    /**
+     * Поле имя клиента
+     */
     @NotNull
     @Pattern(regexp = "[A-Z][a-z]*")
-    @Size(min = 2, max =30)
+    @Size(min = 2, max = 30)
     private String firstName;
-    /** Поле фамилия клиента */
+    /**
+     * Поле фамилия клиента
+     */
     @NotNull
     @Pattern(regexp = "[A-Z][a-z]*")
-    @Size(min = 2, max =30)
+    @Size(min = 2, max = 30)
     private String lastName;
-    /** Поле дата рождения клиента */
+    /**
+     * Поле дата рождения клиента
+     */
     @NotNull
     private Date dateOfBirth;
-    /** Поле пол клиента */
+    /**
+     * Поле пол клиента
+     */
     @Pattern(regexp = "man|woman")
     private String gender;
-    /** Поле паспортные данные клиента */
+    /**
+     * Поле паспортные данные клиента
+     */
     @Size(max = 10, min = 10)
     private String passport;
-    /** Поле возраст клиента */
+    /**
+     * Поле возраст клиента
+     */
     @Min(18)
     private int age;
 
     /**
      * Конструктор - создание нового объекта с определенными значениями, поле id формируется с помощью java.util.UUID
-     *@param firstName  имя клиента
-     *@param lastName фамилия клиента
-     *@param dateOfBirth дата рождения клиента в формате "dd.MM.yyyy"
-     *@param gender пол клиента ("man"/"woman")
-     *@param passport серия и номер паспорта клиента
+     *
+     * @param firstName   имя клиента
+     * @param lastName    фамилия клиента
+     * @param dateOfBirth дата рождения клиента в формате "dd.MM.yyyy"
+     * @param gender      пол клиента ("man"/"woman")
+     * @param passport    серия и номер паспорта клиента
      */
-    public ClientInfo(@NotNull String firstName, String lastName, String dateOfBirth, String gender, String passport)  {
+    public ClientInfo(@NotNull String firstName, String lastName, String dateOfBirth, String gender, String passport) {
         try {
             this.id = UUID.randomUUID();
             this.firstName = firstName;
             this.lastName = lastName;
-            this.dateOfBirth = new SimpleDateFormat( "dd.MM.yyyy" ).parse(dateOfBirth);
+            this.dateOfBirth = new SimpleDateFormat("dd.MM.yyyy").parse(dateOfBirth);
             this.gender = gender;
             this.passport = passport;
             this.updateAge();
-        } catch (ParseException exception){
+        } catch (ParseException exception) {
             exception.printStackTrace();
             System.out.println("Возникла ошибка при обработке даты рождения клиента. Используйте формат - dd.MM.yyyy ");
         }
@@ -76,6 +92,7 @@ public class ClientInfo {
                 ", passport='" + passport + '\'' +
                 '}';
     }
+
     /**
      * Переопределенный метод equals. В сравнении участвуют все поля объекта - id, firstName, lastName, dateOfBirth, gender, passport
      */
@@ -90,6 +107,7 @@ public class ClientInfo {
                 gender.equals(that.gender) &&
                 passport.equals(that.passport);
     }
+
     /**
      * Переопределенный метод hashCode. В составлении хеша участвую все поля объекта - id, firstName, lastName, dateOfBirth, gender, passport
      */
@@ -97,93 +115,118 @@ public class ClientInfo {
     public int hashCode() {
         return Objects.hash(id, firstName.toLowerCase(), lastName.toLowerCase(), dateOfBirth, gender, passport);
     }
+
     /**
      * Геттер для имени клиента
-     * @return  имя клиента. Пример - "Иван"
+     *
+     * @return имя клиента. Пример - "Иван"
      */
     public String getFirstName() {
         return firstName;
     }
+
     /**
      * Сеттер для имени клиента
+     *
      * @param firstName имя клиента. Пример - "Иван"
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     /**
      * Геттер для фамилии клиента
+     *
      * @return фамилия клиента. Пример - "Иванов"
      */
     public String getLastName() {
         return lastName;
     }
+
     /**
      * Сеттер для фамилии клиента
+     *
      * @param lastName фамилия клиента. Пример - "Иванов"
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     /**
      * Геттер для даты рождения клиента
+     *
      * @return дата рождения клиента. Пример - Wed Jan 28 00:00:00 MSK 2004
      */
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
+
     /**
      * Сеттер для даты рождения клиента
+     *
      * @param dateOfBirth дата рождения клиента. Пример - "28.01.2004"
      * @throws ParseException при вводе неверного формата даты
      */
     public void setDateOfBirth(String dateOfBirth) throws ParseException {
-        this.dateOfBirth = new SimpleDateFormat( "dd.MM.yyyy" ).parse(dateOfBirth);
+        this.dateOfBirth = new SimpleDateFormat("dd.MM.yyyy").parse(dateOfBirth);
     }
+
     /**
      * Геттер для пола клиента
+     *
      * @return дата рождения клиента. Пример - "man"/"woman"
      */
     public String getGender() {
         return gender;
     }
+
     /**
      * Сеттер для пола клиента
+     *
      * @param gender пол клиента. Пример - "man"/"woman"
      */
     public void setGender(String gender) {
         this.gender = gender;
     }
+
     /**
      * Геттер для серии и номера паспорта клиента
+     *
      * @return серия и номер паспорта клиента. Пример - "1104000000"
      */
     public String getPassport() {
         return passport;
     }
+
     /**
      * Сеттер для серии и номера паспорта клиента
+     *
      * @param passport фамилия клиента. Пример - "1104000000"
      */
     public void setPassport(String passport) {
         this.passport = passport;
     }
+
     /**
      * Геттер для возраста клиента
+     *
      * @return возраст клиента. Пример - 20
      */
     public int getAge() {
         return age;
     }
+
     /**
      * Метод обновления возраста клиента
      */
-    public void updateAge(){
+    public void updateAge() {
         DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         this.age = Period.between(this.dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), (new Date()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).getYears();
     }
+
     /**
      * Геттер для id клиента
+     *
      * @return возраст клиента. Пример - "162434f9-0d5d-4a2e-a080-ae55f8851f0b"
      */
     public UUID getId() {

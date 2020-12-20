@@ -40,8 +40,10 @@ public class ContractRepository {
         this.listOfContract = new AbstractContract[defaultNumOfContracts];
         this.allOwners = new HashSet<>();
     }
+
     /**
      * Конструктор - создание нового объекта с переданным массивом контрактов
+     *
      * @param listOfContract список контрактов
      */
     public ContractRepository(AbstractContract[] listOfContract) {
@@ -50,15 +52,18 @@ public class ContractRepository {
         this.allOwners = new HashSet<>();
         this.addAllOwner(listOfContract);
     }
+
     /**
      * Метод добавления владельцев контрактов в Set
+     *
      * @param listOfContract список контрактов
      */
-    private void addAllOwner(AbstractContract[] listOfContract){
+    private void addAllOwner(AbstractContract[] listOfContract) {
         for (AbstractContract contract : listOfContract) {
             this.allOwners.add(contract.getOwner());
         }
     }
+
     /**
      * Переопределенный метод equals. В сравнении участвует поле listOfContract
      */
@@ -164,10 +169,11 @@ public class ContractRepository {
         }
         return new ContractRepository(arrOfObj.toArray(new AbstractContract[arrOfObj.size()]));
     }
+
     /**
      * Сеттер для установки массива добавленных контрактов
      *
-     * @param listOfContract  массив добавленных контрактов.
+     * @param listOfContract массив добавленных контрактов.
      */
     public void setListOfContract(AbstractContract[] listOfContract) {
         this.listOfContract = listOfContract;
@@ -181,6 +187,7 @@ public class ContractRepository {
     public void sort(Comparator<AbstractContract> comparator) {
         this.listOfContract = sorter.sort(comparator, this.getListOfContract());
     }
+
     /**
      * Метод сортировки контрактов.
      *

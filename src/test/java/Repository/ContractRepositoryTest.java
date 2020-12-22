@@ -5,6 +5,7 @@ import Contract.AbstractContract;
 import Contract.CellularContract;
 import Contract.InternetContract;
 import Contract.TVContract;
+import myRepository.ContractRepository;
 import org.junit.Assert;
 
 import java.text.SimpleDateFormat;

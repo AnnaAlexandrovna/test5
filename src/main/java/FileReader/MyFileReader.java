@@ -6,7 +6,7 @@ import Contract.CellularContract;
 import Contract.InternetContract;
 import Contract.TVContract;
 import MyValidator.MyValidator;
-import Repository.ContractRepository;
+import myRepository.ContractRepository;
 import ValidatorResult.MyValidatorResult;
 import com.opencsv.CSVReader;
 

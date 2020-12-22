@@ -2,7 +2,7 @@ package FileReader;
 
 import Client.ClientInfo;
 import Contract.AbstractContract;
-import Repository.ContractRepository;
+import myRepository.ContractRepository;
 import org.junit.Assert;
 
 

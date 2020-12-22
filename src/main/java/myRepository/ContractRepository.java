@@ -1,7 +1,8 @@
-package Repository;
+package myRepository;
 
 import Client.ClientInfo;
 import Contract.AbstractContract;
+import Reflection.AutoInjectable;
 import Sorter.ISorter;
 import Sorter.BubbleSorter;
 
@@ -31,7 +32,8 @@ public class ContractRepository {
     /**
      * Поле для выбора способа сортировки контрактов
      */
-    ISorter sorter = new BubbleSorter();
+    @AutoInjectable
+    ISorter sorter;
 
     /**
      * Конструктор - создание нового объекта с пустым массивом вместимостью defaultNumOfContracts элементов

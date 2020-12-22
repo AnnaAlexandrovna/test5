@@ -1,6 +1,7 @@
-package Sorter;
+package Start;
 
 import Contract.AbstractContract;
+import Sorter.ISorter;
 
 import java.util.Comparator;
 

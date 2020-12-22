@@ -1,7 +1,6 @@
 package Reflection;
 
 
-import Sorter.BubbleSorter;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import org.reflections.scanners.SubTypesScanner;
@@ -9,7 +8,6 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
-import javax.management.ReflectionException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,41 +47,50 @@ public class Injector {
 
             for (Field field : object.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(AutoInjectable.class)) {
-                    //System.out.println(field.getType());
+                    System.out.println(field.getGenericType().toString());
                     String fieldType = field.getType().toString();
-                    Class mClassObject = BubbleSorter.class;
-                    Class[] interfaces = mClassObject.getInterfaces();
-                    System.out.println("----------");
                     boolean hasNeededInterface = false;
-                    for (Class anInterface : interfaces) {
-                        if (fieldType.equals(anInterface.toString())) {
-                            hasNeededInterface = true;
-                            break;
+                    List<Class<?>> suitableClasses = new ArrayList<>();
+
+                    //проверяем наличие инт
+                    for (Class<?> scannedCl : scanned) {
+                        Class mClassObject = scannedCl;
+                        Class[] interfaces = mClassObject.getInterfaces();
+                        //System.out.println("----------");
+                        for (Class anInterface : interfaces) {
+                            //System.out.println("anInterface " + anInterface);
+                            if (fieldType.equals(anInterface.toString())) {
+                                hasNeededInterface = true;
+                                break;
+                            }
+                        }
+                        //System.out.println("hasNeededInterface - " + hasNeededInterface);
+                        if (hasNeededInterface) {
+                            suitableClasses.add(scannedCl);
                         }
                     }
-                    System.out.println("hasNeededInterface - " + hasNeededInterface);
-
-                    System.out.println("----------");
                     boolean isFieldCollection = false;
                     if (field.getType().toString().contains("java.util")) {
-                        System.out.println("обрабатываем как коллекцию");
-                        isFieldCollection = false;
-                    } else {
-                        System.out.println("обрабатываем как обычное поле");
                         isFieldCollection = true;
+                    } else {
+                        isFieldCollection = false;
                     }
-                    System.out.println("----------");
                     //если подходит один класс и поле простое - ок
                     //если подходит несколько классов и поле простое - ошибка
                     //если классы не найдены - ошибка
                     //если поле не простое - записываем их в поле
-                    if (scanned.size()==1 && !isFieldCollection) {
+                    if (suitableClasses.size() <= 0) {
+                        throw new Exception("Не найдено классов для вставки");
+                    } else if (suitableClasses.size() == 1) {
+                        field.setAccessible(true);
+                        field.set(object, suitableClasses.get(0).newInstance());
+                    } else if (suitableClasses.size() > 1 && !isFieldCollection) {
+                        throw new Exception("Классов для вставки больше одного, а поле простое");
+                    } else if (isFieldCollection) {
                         try {
-                            Class cl = Class.forName("Sorter.BubbleSorter");
+                            Class cl = Class.forName(suitableClasses.get(0).toString());
                             field.setAccessible(true);
-                            System.out.println(field);
-                            System.out.println(cl);
-                            field.set(object, cl.newInstance());
+                            field.set(object, suitableClasses);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

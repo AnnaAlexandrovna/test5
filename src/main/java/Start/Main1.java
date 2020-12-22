@@ -34,7 +34,8 @@ final class Main1 {
             Injector injector = new Injector();
             ContractRepository repository = new ContractRepository();
             injector.inject(repository);
-            repository.toString();
+            System.out.println(repository.toString());
+
             ClientInfo client1 = new ClientInfo("test", "test", "01.05.2000", "man", "2048123456");
             AbstractContract contract1 = new InternetContract("28.01.2004", "28.01.2024", client1, 350);
             AbstractContract contract2 = new CellularContract("20.10.2000", "20.10.2024", client1, 100, 6, 150);

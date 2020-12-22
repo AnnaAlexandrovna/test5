@@ -4,7 +4,6 @@ import Client.ClientInfo;
 import Contract.AbstractContract;
 import Reflection.AutoInjectable;
 import Sorter.ISorter;
-import Sorter.BubbleSorter;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -32,8 +31,11 @@ public class ContractRepository {
     /**
      * Поле для выбора способа сортировки контрактов
      */
+ //@AutoInjectable
+      ISorter sorter;
+
     @AutoInjectable
-    ISorter sorter;
+    List<ISorter> sorter1;
 
     /**
      * Конструктор - создание нового объекта с пустым массивом вместимостью defaultNumOfContracts элементов
@@ -53,6 +55,18 @@ public class ContractRepository {
         this.counter = listOfContract.length;
         this.allOwners = new HashSet<>();
         this.addAllOwner(listOfContract);
+    }
+
+    @Override
+    public String toString() {
+        return "ContractRepository{" +
+                "listOfContract=" + Arrays.toString(listOfContract) +
+                ", defaultNumOfContracts=" + defaultNumOfContracts +
+                ", counter=" + counter +
+                ", allOwners=" + allOwners +
+                ", sorter=" + sorter +
+                ", sorter1=" + sorter1 +
+                '}';
     }
 
     /**

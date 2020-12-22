@@ -9,8 +9,10 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
+import javax.management.ReflectionException;
 import java.lang.reflect.Field;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -25,10 +27,10 @@ public class Injector {
      * @param object класс, куда надо внедрять зависимости
      * @return ....
      */
-    public <T> T inject(T object) {
+    public <T> T inject(T object) throws Exception {
         //забираем пакеты, в которых нужно искать классы из аннотации
         String[] pack = Injector.class.getAnnotation(Configuration.class).packages();
-        Collection<Class<?>> scanned;
+        List<Class<?>> scanned = new ArrayList<>();
 
         for (String s : pack) {
             //дикий фильтр отедактировала (https://github.com/ronmamo/reflections/issues/234)
@@ -37,14 +39,14 @@ public class Injector {
                     .setUrls(ClasspathHelper.forPackage(s))
                     .filterInputsBy(new FilterBuilder().includePackage(s));
             final Reflections reflect = new Reflections(config);
-            scanned = reflect.getSubTypesOf(Object.class);
-
-            for (Class<?> clss : scanned) {
-                System.out.println(clss);
-            }
-            System.out.println(s);
+            scanned.addAll(reflect.getSubTypesOf(Object.class));
         }
-        //if () {
+        for (Class<?> clss : scanned) {
+            System.out.println(clss);
+        }
+        //смотрим, вообще какие-то классы нашлись или нет
+        if (scanned.size() != 0) {
+
             for (Field field : object.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(AutoInjectable.class)) {
                     //System.out.println(field.getType());
@@ -52,16 +54,17 @@ public class Injector {
                     Class mClassObject = BubbleSorter.class;
                     Class[] interfaces = mClassObject.getInterfaces();
                     System.out.println("----------");
-                    Boolean hasNeededInterface = false;
+                    boolean hasNeededInterface = false;
                     for (Class anInterface : interfaces) {
                         if (fieldType.equals(anInterface.toString())) {
                             hasNeededInterface = true;
+                            break;
                         }
                     }
                     System.out.println("hasNeededInterface - " + hasNeededInterface);
 
                     System.out.println("----------");
-                    Boolean isFieldCollection = false;
+                    boolean isFieldCollection = false;
                     if (field.getType().toString().contains("java.util")) {
                         System.out.println("обрабатываем как коллекцию");
                         isFieldCollection = false;
@@ -74,19 +77,22 @@ public class Injector {
                     //если подходит несколько классов и поле простое - ошибка
                     //если классы не найдены - ошибка
                     //если поле не простое - записываем их в поле
-                    try{
-                        Class cl = Class.forName("Sorter.BubbleSorter");
-                        field.setAccessible(true);
-                        System.out.println(field);
-                        System.out.println(cl);
-                        field.set(object, cl.newInstance());
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (scanned.size()==1 && !isFieldCollection) {
+                        try {
+                            Class cl = Class.forName("Sorter.BubbleSorter");
+                            field.setAccessible(true);
+                            System.out.println(field);
+                            System.out.println(cl);
+                            field.set(object, cl.newInstance());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
-        //}
-
+        } else {
+            throw new Exception("Не найдено классов для поиска зависимостей");
+        }
         return object;
     }
 }

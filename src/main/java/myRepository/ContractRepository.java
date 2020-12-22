@@ -31,9 +31,12 @@ public class ContractRepository {
     /**
      * Поле для выбора способа сортировки контрактов
      */
- //@AutoInjectable
-      ISorter sorter;
+    @AutoInjectable
+    ISorter sorter;
 
+    /**
+     * Поле для теста инжекта зависимостей
+     */
     @AutoInjectable
     List<ISorter> sorter1;
 
@@ -57,6 +60,9 @@ public class ContractRepository {
         this.addAllOwner(listOfContract);
     }
 
+    /**
+     * Метод преобразования класса к строке
+     */
     @Override
     public String toString() {
         return "ContractRepository{" +

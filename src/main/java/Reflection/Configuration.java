@@ -10,7 +10,8 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Configuration {
     /**
-     * Метод для добавления и получений полей для вставки
+     * Метод для указания, где искать классы для вставки
+     * @return массив строк с пакетами, где искать классы для вставки
      */
     String[] packages();
 

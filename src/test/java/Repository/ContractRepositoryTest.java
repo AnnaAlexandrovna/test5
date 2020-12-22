@@ -5,6 +5,7 @@ import Contract.AbstractContract;
 import Contract.CellularContract;
 import Contract.InternetContract;
 import Contract.TVContract;
+import Reflection.Injector;
 import myRepository.ContractRepository;
 import org.junit.Assert;
 
@@ -87,19 +88,26 @@ public class ContractRepositoryTest {
 
     @org.junit.Test
     public void sort() {
-        ClientInfo client1 = new ClientInfo("test", "test", "01.05.2000", "man", "2048 23423423424");
-        AbstractContract contract1 = new InternetContract("28.01.2004", "28.01.2024", client1, 350);
-        AbstractContract contract2 = new CellularContract("20.10.2000", "20.10.2024", client1, 100, 6, 150);
-        AbstractContract contract3 = new TVContract("15.09.2008", "20.12.2023", client1, 6);
-        ContractRepository repository = new ContractRepository();
-        repository.addContract(contract1);
-        repository.addContract(contract2);
-        repository.addContract(contract3);
-        repository.sort(new Comparator<AbstractContract>() {
-            @Override
-            public int compare(AbstractContract o1, AbstractContract o2) {
-                return o1.getStartDate().compareTo(o2.getStartDate());
-            }
-        });
+        try {
+            Injector injector = new Injector();
+            ContractRepository repository = new ContractRepository();
+            injector.inject(repository);
+            ClientInfo client1 = new ClientInfo("test", "test", "01.05.2000", "man", "2048 23423423424");
+            AbstractContract contract1 = new InternetContract("28.01.2004", "28.01.2024", client1, 350);
+            AbstractContract contract2 = new CellularContract("20.10.2000", "20.10.2024", client1, 100, 6, 150);
+            AbstractContract contract3 = new TVContract("15.09.2008", "20.12.2023", client1, 6);
+            repository.addContract(contract1);
+            repository.addContract(contract2);
+            repository.addContract(contract3);
+            repository.sort(new Comparator<AbstractContract>() {
+                @Override
+                public int compare(AbstractContract o1, AbstractContract o2) {
+                    return o1.getStartDate().compareTo(o2.getStartDate());
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

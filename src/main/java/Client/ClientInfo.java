@@ -1,5 +1,6 @@
 package Client;
 
+import javax.validation.constraints.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,16 +17,26 @@ public class ClientInfo {
     /** Поле id клиента */
     private UUID id;
     /** Поле имя клиента */
+    @NotNull
+    @Pattern(regexp = "[A-Z][a-z]*")
+    @Size(min = 2, max =30)
     private String firstName;
     /** Поле фамилия клиента */
+    @NotNull
+    @Pattern(regexp = "[A-Z][a-z]*")
+    @Size(min = 2, max =30)
     private String lastName;
     /** Поле дата рождения клиента */
+    @NotNull
     private Date dateOfBirth;
     /** Поле пол клиента */
+    @Pattern(regexp = "man|woman")
     private String gender;
     /** Поле паспортные данные клиента */
+    @Size(max = 10, min = 10)
     private String passport;
     /** Поле возраст клиента */
+    @Min(18)
     private int age;
 
     /**
@@ -36,7 +47,7 @@ public class ClientInfo {
      *@param gender пол клиента ("man"/"woman")
      *@param passport серия и номер паспорта клиента
      */
-    public ClientInfo( String firstName, String lastName, String dateOfBirth, String gender, String passport)  {
+    public ClientInfo(@NotNull String firstName, String lastName, String dateOfBirth, String gender, String passport)  {
         try {
             this.id = UUID.randomUUID();
             this.firstName = firstName;
@@ -73,9 +84,8 @@ public class ClientInfo {
         if (this == o) return true;
         if (!(o instanceof ClientInfo)) return false;
         ClientInfo that = (ClientInfo) o;
-        return id.equals(that.id) &&
-                firstName.equals(that.firstName) &&
-                lastName.equals(that.lastName) &&
+        return firstName.toLowerCase().equals(that.firstName.toLowerCase()) &&
+                lastName.toLowerCase().equals(that.lastName.toLowerCase()) &&
                 dateOfBirth.equals(that.dateOfBirth) &&
                 gender.equals(that.gender) &&
                 passport.equals(that.passport);
@@ -85,7 +95,7 @@ public class ClientInfo {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, dateOfBirth, gender, passport);
+        return Objects.hash(id, firstName.toLowerCase(), lastName.toLowerCase(), dateOfBirth, gender, passport);
     }
     /**
      * Геттер для имени клиента
